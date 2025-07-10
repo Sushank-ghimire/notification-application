@@ -1,7 +1,19 @@
+import mongoose from "mongoose";
 import server from "./app";
+import { initSocket } from "./services/socket";
 
-const port = 3000;
+const PORT = process.env.PORT || 3000;
 
-server.listen(port, () => {
-  console.log(`Server is running on port 3000 or https://localhost:${3000}`);
-});
+mongoose
+  .connect(process.env.MONGO_URI!)
+  .then(() => {
+    server.listen(PORT, () => {
+      console.log(
+        `Server is running on port 3000 or https://localhost:${PORT}`
+      );
+      initSocket(server);
+    });
+  })
+  .catch((err) => {
+    console.log(`Database connection error : ${err}`);
+  });
