@@ -1,5 +1,6 @@
 import mongoose from "mongoose";
 import server from "./app";
+import { initSocket } from "./services/socket";
 
 const PORT = process.env.PORT || 3000;
 
@@ -10,6 +11,7 @@ mongoose
       console.log(
         `Server is running on port 3000 or https://localhost:${PORT}`
       );
+      initSocket(server);
     });
   })
   .catch((err) => {
