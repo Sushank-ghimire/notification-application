@@ -1,5 +1,8 @@
 import express, { Request, Response } from "express";
 import http from "node:http";
+import { configDotenv } from "dotenv";
+
+configDotenv();
 
 const app = express();
 
