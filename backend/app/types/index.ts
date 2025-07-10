@@ -1,3 +1,4 @@
+import { NextFunction, Request, Response } from "express";
 import { Document, Types } from "mongoose";
 
 export interface NotificationModel extends Document {
@@ -17,3 +18,9 @@ export interface UserModel extends Document {
   password: string;
   notifications: Types.ObjectId[];
 }
+
+export type AsyncFunction = (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => Promise<any>;
