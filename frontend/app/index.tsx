@@ -1,9 +1,12 @@
 import { View, Text, TouchableOpacity } from 'react-native';
 import { Bell } from 'lucide-react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { useRouter } from 'expo-router';
 
 const Homepage = () => {
   const unreadCount = 3;
+
+  const router = useRouter();
 
   return (
     <SafeAreaView className="flex-1 items-center justify-center bg-white">
@@ -26,7 +29,11 @@ const Homepage = () => {
       </View>
 
       {/* Navigation Button */}
-      <TouchableOpacity className="rounded-2xl bg-blue-600 px-6 py-3 shadow-md">
+      <TouchableOpacity
+        onPress={() => {
+          router.push('/notifications');
+        }}
+        className="rounded-2xl bg-blue-600 px-6 py-3 shadow-md">
         <Text className="text-lg font-semibold text-white md:text-xl">View Notifications</Text>
       </TouchableOpacity>
     </SafeAreaView>

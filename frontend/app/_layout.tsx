@@ -6,6 +6,10 @@ export default function Layout() {
   return (
     <Stack>
       <Stack.Screen name="index" options={{ title: 'Homepage', headerShadowVisible: false }} />
+      <Stack.Screen
+        name="(root)"
+        options={{ title: 'Root', headerShown: false, animation: 'flip' }}
+      />
     </Stack>
   );
 }
