@@ -11,8 +11,7 @@ const useNotification = create<NotificationStore>((set, get) => ({
   fetchNotifications: async (userId) => {
     set({ isLoading: true });
     try {
-      const res = await api.get(`/notification/${userId}`);
-      console.log('Res : ', res);
+      const res = await api.get(`/notification/get/${userId}`);
 
       const data = res.data.data as INotification[];
 
