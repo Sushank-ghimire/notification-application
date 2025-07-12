@@ -1,12 +1,18 @@
-import { View, Text, TouchableOpacity } from 'react-native';
+import { View, Text, TouchableOpacity, ActivityIndicator } from 'react-native';
 import { Bell } from 'lucide-react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useRouter } from 'expo-router';
+import { useEffect } from 'react';
+import { useNotification } from '~/store/store';
 
 const Homepage = () => {
-  const unreadCount = 3;
-
   const router = useRouter();
+
+  const { fetchNotifications, unreadedNotifications, isLoading } = useNotification();
+
+  useEffect(() => {
+    fetchNotifications('user123');
+  }, []);
 
   return (
     <SafeAreaView className="flex-1 items-center justify-center bg-white">
@@ -25,7 +31,13 @@ const Homepage = () => {
 
       {/* Unread Count Display */}
       <View className="mb-6 rounded-xl bg-red-100 px-4 py-2">
-        <Text className="font-medium text-red-600">Unread Notifications: {unreadCount}</Text>
+        {isLoading ? (
+          <ActivityIndicator size={'small'} />
+        ) : (
+          <Text className="font-medium text-red-600">
+            Unread Notifications: {unreadedNotifications.length || 0}
+          </Text>
+        )}
       </View>
 
       {/* Navigation Button */}

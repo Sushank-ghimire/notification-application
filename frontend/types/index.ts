@@ -15,4 +15,6 @@ export interface NotificationStore {
   markAsRead: (notificationId: string) => void;
   markAsUnread: (notificationId: string) => void;
   error: string | null;
+  unreadedNotifications: INotification[];
+  readedNotifications: INotification[];
 }
