@@ -6,7 +6,12 @@ import { getIO } from "../services/socket";
 export const getNotifications = asyncHandler(async (req, res) => {
   const { id: userId } = req.body;
   if (!userId) {
-    return sendError(res, "User id must be provided", 400);
+    return sendError(
+      res,
+      "User id must be provided",
+      400,
+      "User id not provided"
+    );
   }
   const notifications = await Notification.find({ recipient: userId });
   return sendSuccess(res, notifications, "Notifications fetched");
@@ -55,6 +60,14 @@ export const unreadNotification = asyncHandler(async (req, res) => {
 // CREATE notification (called by backend service or admin)
 export const createNotification = asyncHandler(async (req, res) => {
   const { recipient, title, body, type, data } = req.body;
+  if ([recipient, title, body, type, data].some((field) => !field)) {
+    return sendError(
+      res,
+      "All fields are required",
+      400,
+      "All fields of notification creation are required"
+    );
+  }
   const newNotification = await Notification.create({
     recipient,
     title,
