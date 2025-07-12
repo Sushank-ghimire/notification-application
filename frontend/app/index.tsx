@@ -1,17 +1,50 @@
-import { View, Text, TouchableOpacity, ActivityIndicator } from 'react-native';
+import { View, Text, TouchableOpacity, ActivityIndicator, Alert } from 'react-native';
 import { Bell } from 'lucide-react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useRouter } from 'expo-router';
 import { useEffect } from 'react';
 import { useNotification } from '~/store/store';
+import * as Notifications from 'expo-notifications';
+import * as Device from 'expo-device';
+
+Notifications.setNotificationHandler({
+  handleNotification: async () => ({
+    shouldShowAlert: true,
+    shouldPlaySound: true,
+    shouldShowBanner: true,
+    shouldSetBadge: true,
+    shouldShowList: false,
+  }),
+});
 
 const Homepage = () => {
   const router = useRouter();
 
   const { fetchNotifications, unreadedNotifications, isLoading } = useNotification();
 
+  // fetching the user's notifications
   useEffect(() => {
     fetchNotifications('user123');
+  }, []);
+
+  // Checking the notification permissions
+  useEffect(() => {
+    const requestPermission = async () => {
+      if (Device.isDevice) {
+        const { status } = await Notifications.getPermissionsAsync();
+        let finalStatus = status;
+        if (finalStatus !== 'granted') {
+          const { status } = await Notifications.requestPermissionsAsync();
+          finalStatus = status;
+        }
+      } else {
+        Alert.alert(
+          'Notification Permission',
+          'Must use a physical device for notification permission'
+        );
+      }
+    };
+    requestPermission();
   }, []);
 
   return (
