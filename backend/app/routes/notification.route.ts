@@ -9,7 +9,7 @@ import {
 const notificationRoutes = Router();
 
 // GET all notifications for a user (userId from body)
-notificationRoutes.get("/", getNotifications);
+notificationRoutes.get("/get/:id", getNotifications);
 
 // PATCH - Mark a specific notification as read
 notificationRoutes.patch("/:id/read", markAsRead);

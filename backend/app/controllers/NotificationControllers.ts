@@ -4,7 +4,7 @@ import { getIO } from "../services/socket";
 
 // GET all notifications
 export const getNotifications = asyncHandler(async (req, res) => {
-  const { id: userId } = req.body;
+  const { id: userId } = req.params;
   if (!userId) {
     return sendError(
       res,
