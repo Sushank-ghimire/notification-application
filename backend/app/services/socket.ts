@@ -6,7 +6,7 @@ let io: IOServer | null = null;
 export const initSocket = (server: HttpServer) => {
   io = new IOServer(server, {
     cors: {
-      origin: ["*", process.env.FRONTEND_URL as string], // URL of frontend app
+      origin: "*",
       methods: ["GET", "POST"],
     },
   });

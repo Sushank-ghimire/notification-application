@@ -4,6 +4,7 @@ import http from "node:http";
 import { configDotenv } from "dotenv";
 import { sendError } from "./utils";
 import notificationRoutes from "./routes/notification.route";
+import cors from "cors";
 
 configDotenv();
 
@@ -12,8 +13,13 @@ const app = express();
 const server = http.createServer(app);
 
 app.use(express.json()); // For Json parsing
+app.use(
+  cors({
+    origin: "*",
+  })
+);
 
-if(process.env.NODE_ENV === "development") {
+if (process.env.NODE_ENV === "development") {
   app.use(morgan("dev")); // request logger middleware
 }
 
