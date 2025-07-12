@@ -18,3 +18,21 @@ export interface NotificationStore {
   unreadedNotifications: INotification[];
   readedNotifications: INotification[];
 }
+
+interface MultiStepFormData {
+  username: string;
+  email: string;
+  password: string;
+  country: string;
+  gender: string;
+}
+
+export interface IFormStore {
+  step: number;
+  data: MultiStepFormData;
+  nextStep: () => void;
+  prevStep: () => void;
+  setData: (fields: Partial<MultiStepFormData>) => void;
+  reset: () => void;
+  handleSubmit: () => Promise<void>;
+}

@@ -10,6 +10,10 @@ export default function Layout() {
         name="(root)"
         options={{ title: 'Root', headerShown: false, animation: 'flip' }}
       />
+      <Stack.Screen
+        name="modal"
+        options={{ title: 'Modal', headerShown: false, animation: 'fade_from_bottom' }}
+      />
     </Stack>
   );
 }

@@ -1,14 +1,23 @@
 import { Text, View, TouchableOpacity } from 'react-native';
 import { Bell, CheckCircle2 } from 'lucide-react-native';
 import { INotification } from '~/types';
+import { useRouter } from 'expo-router';
+import { useNotification } from '~/store/store';
 
 interface INotificationItemsProps {
   item: INotification;
 }
 
 export const NotificationItem = ({ item }: INotificationItemsProps) => {
+  const { markAsRead } = useNotification();
+  const router = useRouter();
+  const handlePress = () => {
+    markAsRead(item._id);
+    router.push('/modal');
+  };
   return (
     <TouchableOpacity
+      onPress={handlePress}
       className={`w-full border-b border-gray-100 px-4 py-3 ${
         !item.isRead ? 'border-l-4 border-blue-500 bg-blue-50' : 'bg-white'
       }`}>
