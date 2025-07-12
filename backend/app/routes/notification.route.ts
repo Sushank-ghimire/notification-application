@@ -3,6 +3,7 @@ import {
   getNotifications,
   markAsRead,
   unreadNotification,
+  createNotification
 } from "../controllers/NotificationControllers";
 
 const notificationRoutes = Router();
@@ -17,6 +18,6 @@ notificationRoutes.patch("/:id/read", markAsRead);
 notificationRoutes.patch("/:id/unread", unreadNotification);
 
 // POST - Create a new notification (backend/admin trigger)
-// notificationRoutes.post("/", createNotification);
+notificationRoutes.post("/add", createNotification);
 
 export default notificationRoutes;

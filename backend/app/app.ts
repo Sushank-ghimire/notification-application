@@ -1,4 +1,5 @@
 import express, { NextFunction, Request, Response } from "express";
+import morgan from "morgan";
 import http from "node:http";
 import { configDotenv } from "dotenv";
 import { sendError } from "./utils";
@@ -11,6 +12,10 @@ const app = express();
 const server = http.createServer(app);
 
 app.use(express.json()); // For Json parsing
+
+if(process.env.NODE_ENV === "development") {
+  app.use(morgan("dev")); // request logger middleware
+}
 
 app.get("/", (req: Request, res: Response) => {
   res.json({ message: "Server is running!" });

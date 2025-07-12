@@ -30,7 +30,7 @@ const sendError = (
     success: false,
     message,
     error:
-      process.env.NODE_ENV === "development" ? error : "Internal server error",
+      process.env.NODE_ENV as string === "development" ? error : "Internal server error",
   });
 };
 
