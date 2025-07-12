@@ -1,23 +1,37 @@
 import { create } from 'zustand';
-import { NotificationStore } from '~/types';
+import { INotification, NotificationStore } from '~/types';
 import api from '~/utils/axios';
 
-const useNotification = create<NotificationStore>((set) => ({
+const useNotification = create<NotificationStore>((set, get) => ({
   notifications: [],
+  unreadedNotifications: [],
+  readedNotifications: [],
   isLoading: false,
   error: null,
   fetchNotifications: async (userId) => {
+    set({ isLoading: true });
     try {
-      const res = await api.get('/notification/', {
-        data: { id: userId },
+      const res = await api.get(`/notification/${userId}`);
+      console.log('Res : ', res);
+
+      const data = res.data.data as INotification[];
+
+      const unreadedNotifications = data.filter((notification) => notification.isRead === false);
+
+      const readedNotifications = data.filter((notification) => notification.isRead === true);
+
+      set({
+        notifications: data,
+        unreadedNotifications,
+        readedNotifications,
       });
-      const data = await res.data.data;
-      set({ notifications: data });
     } catch (error) {
       if (error instanceof Error) {
         set({ error: error.message });
       }
       console.log('Error occured while fetching notifications : ', error);
+    } finally {
+      set({ isLoading: false });
     }
   },
   markAsRead: async (notificationId) => {
