@@ -1,7 +1,7 @@
 {
   "expo": {
     "name": "frontend",
-    "slug": "frontend",
+    "slug": "notification-application",
     "version": "1.0.0",
     "scheme": "frontend",
     "web": {
@@ -33,7 +33,9 @@
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
-    "assetBundlePatterns": ["**/*"],
+    "assetBundlePatterns": [
+      "**/*"
+    ],
     "ios": {
       "supportsTablet": true
     },
@@ -43,6 +45,13 @@
         "backgroundColor": "#ffffff"
       },
       "package": "com.ghimiresushank.frontend"
-    }
+    },
+    "extra": {
+      "router": {},
+      "eas": {
+        "projectId": "e9767bf5-2e3a-4dad-913f-b0a50102c0bf"
+      }
+    },
+    "owner": "ghimiresushank"
   }
 }
