@@ -7,6 +7,9 @@ const BACKEND_URL = 'https://kdbvglw2-3000.asse.devtunnels.ms/'; // Temporary ad
 const socket = io(BACKEND_URL, {
   transports: ['websocket'],
   reconnection: true,
+  query: {
+    userId: 'user123',
+  },
 });
 
 export default socket;

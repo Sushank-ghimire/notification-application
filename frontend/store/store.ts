@@ -4,6 +4,7 @@ import socket from '~/services/socket';
 import { IFormStore, INotification, NotificationStore } from '~/types';
 import api from '~/utils/axios';
 import * as Notifications from 'expo-notifications';
+import * as Device from 'expo-device';
 
 const useNotification = create<NotificationStore>((set, get) => ({
   notifications: [],
@@ -84,18 +85,19 @@ const useNotification = create<NotificationStore>((set, get) => ({
     socket.emit('join', userId);
     socket.on('new_notification', async (notification: INotification) => {
       get().fetchNotifications(userId);
-      const latestNotifiaction = get().notifications[0];
-      await Notifications.scheduleNotificationAsync({
-        content: {
-          title: latestNotifiaction.title,
-          body: latestNotifiaction.body,
-          sound: 'default',
-        },
-        trigger: {
-          seconds: new Date().getSeconds() + 2,
-          repeats: false,
-        } as any,
-      });
+      if (Device.isDevice) {
+        await Notifications.scheduleNotificationAsync({
+          content: {
+            title: notification.title,
+            body: notification.body,
+            sound: 'default',
+          },
+          trigger: {
+            seconds: new Date().getSeconds() + 1,
+            repeats: false,
+          } as any,
+        });
+      }
       set((state) => ({
         notifications: [notification, ...state.notifications],
         unreadNotifications: [notification, ...state.unreadedNotifications],
