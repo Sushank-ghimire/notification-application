@@ -42,10 +42,10 @@ bun start
 
 ---
 
-### 📽️ Demo Video
+### 📽️ Demo Video (Video and Application Files are located inside the public folder)
 
 <video width="400" height="400" controls>
-  <source src="./public/DemoVideo.mp4" type="video/mp4">
+  <source src="https://github.com/Sushank-ghimire/notification-application/tree/main/public/DemoVido.mp4" type="video/mp4">
   Your browser does not support the video tag.
 </video>
 
