@@ -59,8 +59,8 @@ export const unreadNotification = asyncHandler(async (req, res) => {
 
 // CREATE notification (called by backend service or admin)
 export const createNotification = asyncHandler(async (req, res) => {
-  const { recipient, title, body, type, data } = req.body;
-  if ([recipient, title, body, type, data].some((field) => !field)) {
+  const { recipient, title, body, type } = req.body;
+  if ([recipient, title, body, type].some((field) => !field)) {
     return sendError(
       res,
       "All fields are required",
@@ -73,7 +73,6 @@ export const createNotification = asyncHandler(async (req, res) => {
     title,
     body,
     type,
-    data,
   });
   const io = getIO();
   io.to(recipient).emit("new_notification", newNotification);
