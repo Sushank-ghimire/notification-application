@@ -8,9 +8,7 @@ mongoose
   .connect(process.env.MONGO_URI!)
   .then(() => {
     server.listen(PORT, () => {
-      console.log(
-        `Server is running on port 3000 or https://localhost:${PORT}`
-      );
+      console.log(`Server is running on port 3000 or http://localhost:${PORT}`);
       initSocket(server);
     });
   })
