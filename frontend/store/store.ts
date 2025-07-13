@@ -48,6 +48,7 @@ const useNotification = create<NotificationStore>((set, get) => ({
       });
       set({ notifications: filteredNotifications });
       await api.patch(`/notification/${notificationId}/read`);
+      get().fetchNotifications('user123');
     } catch (error) {
       if (error instanceof Error) {
         set({ error: error.message });
@@ -69,6 +70,7 @@ const useNotification = create<NotificationStore>((set, get) => ({
       });
       set({ notifications: filteredNotifications });
       await api.patch(`/notification/${notificationId}/unread`);
+      get().fetchNotifications('user123');
     } catch (error) {
       if (error instanceof Error) {
         set({ error: error.message });

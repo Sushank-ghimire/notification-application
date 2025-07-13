@@ -65,9 +65,9 @@ const Homepage = () => {
       {/* Unread Count Display */}
       <View className="mb-6 rounded-xl bg-red-100 px-4 py-2">
         {isLoading ? (
-          <ActivityIndicator size={'small'} />
+          <ActivityIndicator color={'white'} size={'small'} />
         ) : (
-          <Text className="font-medium text-red-600">
+          <Text className="text-lg font-medium text-red-600">
             Unread Notifications: {unreadedNotifications.length || 0}
           </Text>
         )}
