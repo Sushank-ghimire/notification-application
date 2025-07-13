@@ -3,7 +3,7 @@ import { create } from 'zustand';
 import { IFormStore, INotification, NotificationStore } from '~/types';
 import api from '~/utils/axios';
 
-const useNotification = create<NotificationStore>((set) => ({
+const useNotification = create<NotificationStore>((set, get) => ({
   notifications: [],
   unreadedNotifications: [],
   readedNotifications: [],
@@ -36,6 +36,17 @@ const useNotification = create<NotificationStore>((set) => ({
   },
   markAsRead: async (notificationId) => {
     try {
+      const filteredNotifications = get().notifications.map((item) => {
+        if (item._id === notificationId) {
+          return {
+            ...item,
+            isRead: true,
+          };
+        } else {
+          return item;
+        }
+      });
+      set({ notifications: filteredNotifications });
       await api.patch(`/notification/${notificationId}/read`);
     } catch (error) {
       if (error instanceof Error) {
@@ -46,6 +57,17 @@ const useNotification = create<NotificationStore>((set) => ({
   },
   markAsUnread: async (notificationId) => {
     try {
+      const filteredNotifications = get().notifications.map((item) => {
+        if (item._id === notificationId) {
+          return {
+            ...item,
+            isRead: false,
+          };
+        } else {
+          return item;
+        }
+      });
+      set({ notifications: filteredNotifications });
       await api.patch(`/notification/${notificationId}/unread`);
     } catch (error) {
       if (error instanceof Error) {
