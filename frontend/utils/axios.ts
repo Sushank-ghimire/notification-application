@@ -1,6 +1,7 @@
 import axios from 'axios';
 
-const BASE_URL = process.env.EXPO_PUBLIC_BACKEND_URL! || 'http://localhost:3000/api/v1/users';
+const BASE_URL =
+  process.env.EXPO_PUBLIC_BACKEND_URL! || 'https://kdbvglw2-3000.asse.devtunnels.ms/api/v1/users';
 
 const api = axios.create({
   baseURL: BASE_URL,

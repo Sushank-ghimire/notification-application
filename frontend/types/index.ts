@@ -17,6 +17,7 @@ export interface NotificationStore {
   error: string | null;
   unreadedNotifications: INotification[];
   readedNotifications: INotification[];
+  listenToSocket: (id: string) => void;
 }
 
 interface MultiStepFormData {

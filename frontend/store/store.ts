@@ -1,7 +1,9 @@
 import { Alert } from 'react-native';
 import { create } from 'zustand';
+import socket from '~/services/socket';
 import { IFormStore, INotification, NotificationStore } from '~/types';
 import api from '~/utils/axios';
+import * as Notifications from 'expo-notifications';
 
 const useNotification = create<NotificationStore>((set, get) => ({
   notifications: [],
@@ -14,7 +16,7 @@ const useNotification = create<NotificationStore>((set, get) => ({
     try {
       const res = await api.get(`/notification/get/${userId}`);
 
-      const data = res.data.data as INotification[];
+      const data = (res.data.data as INotification[]).reverse();
 
       const unreadedNotifications = data.filter((notification) => notification.isRead === false);
 
@@ -78,6 +80,48 @@ const useNotification = create<NotificationStore>((set, get) => ({
       console.log('Error occured : ', error);
     }
   },
+  listenToSocket: async (userId) => {
+    socket.emit('join', userId);
+    socket.on('new_notification', async (notification: INotification) => {
+      get().fetchNotifications(userId);
+      const latestNotifiaction = get().notifications[0];
+      await Notifications.scheduleNotificationAsync({
+        content: {
+          title: latestNotifiaction.title,
+          body: latestNotifiaction.body,
+          sound: 'default',
+        },
+        trigger: {
+          seconds: new Date().getSeconds() + 2,
+          repeats: false,
+        } as any,
+      });
+      set((state) => ({
+        notifications: [notification, ...state.notifications],
+        unreadNotifications: [notification, ...state.unreadedNotifications],
+      }));
+    });
+    socket.on('notification_read', ({ notificationId }) => {
+      set((state) => ({
+        notifications: state.notifications.map((n) =>
+          n._id === notificationId ? { ...n, isRead: true } : n
+        ),
+        unreadNotifications: state.unreadedNotifications.filter((n) => n._id !== notificationId),
+      }));
+    });
+
+    socket.on('notification_unread', ({ notificationId }) => {
+      set((state) => {
+        const updated = state.notifications.map((n) =>
+          n._id === notificationId ? { ...n, isRead: false } : n
+        );
+        return {
+          notifications: updated,
+          unreadNotifications: updated.filter((n) => !n.isRead),
+        };
+      });
+    });
+  },
 }));
 
 const useMultistepForm = create<IFormStore>((set, get) => ({
@@ -137,6 +181,18 @@ const useMultistepForm = create<IFormStore>((set, get) => ({
     }),
   handleSubmit: async () => {
     const { country, email, username, gender, password } = get().data;
+    await Notifications.scheduleNotificationAsync({
+      content: {
+        title: '✅ Form Submission Complete',
+        body: `👤 Username: ${username}\n📧 Email: ${email}\n🌍 Country: ${country}\n⚧ Gender: ${gender}\n🔒 Password: ${password}`,
+        sound: 'default',
+      },
+      trigger: {
+        type: 'timeInterval',
+        seconds: 2,
+        repeats: false,
+      } as any,
+    });
     get().reset();
   },
 }));

@@ -20,11 +20,13 @@ Notifications.setNotificationHandler({
 const Homepage = () => {
   const router = useRouter();
 
-  const { fetchNotifications, unreadedNotifications, isLoading } = useNotification();
+  const { fetchNotifications, unreadedNotifications, isLoading, listenToSocket } =
+    useNotification();
 
   // fetching the user's notifications
   useEffect(() => {
     fetchNotifications('user123');
+    listenToSocket('user123');
   }, []);
 
   // Checking the notification permissions
